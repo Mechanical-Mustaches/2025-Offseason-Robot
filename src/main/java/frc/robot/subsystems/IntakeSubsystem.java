@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase{
         ClosedLoopConfig pidConfig = new ClosedLoopConfig();
 
         pidConfig
-            .pid(.1, 0, 0)
+            .pid(0.1, 0, 0)
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
         leftConfig
