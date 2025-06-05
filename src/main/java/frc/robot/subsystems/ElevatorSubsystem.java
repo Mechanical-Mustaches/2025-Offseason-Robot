@@ -63,6 +63,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightEleMotor.configure(rightConfig, null, null);
         armPivot.configure(armPivotConfig, null, null);
     }
+
+    public void setPosition(Level targetLevel) {
+        leftEleMotor.getClosedLoopController().setReference(targetLevel.encoderValue, ControlType.kPosition);
+        //Sketchy
+    }
+
     public double getEleEncoderValue(){
         return leftEleMotor.getEncoder().getPosition();
     }
