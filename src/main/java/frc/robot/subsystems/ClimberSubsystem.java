@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
@@ -30,5 +31,17 @@ public class ClimberSubsystem extends SubsystemBase{
     }
     public double getEncoderValue(){
         return climberMotor.getEncoder().getPosition();
+    }
+
+    public void climb(){
+        climberMotor.getClosedLoopController().setReference(10, ControlType.kPosition);
+    }
+
+    public void reverseClimb(){
+        climberMotor.set(-0.2);
+    }
+
+    public void stopClimb(){
+        climberMotor.set(0);
     }
 }

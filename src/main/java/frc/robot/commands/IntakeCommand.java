@@ -12,9 +12,17 @@ public class IntakeCommand extends Command{
     @Override
     public void initialize(){
         intake.intakeSpin();
+        intake.pivotPickUp();
     }
-    public void end(){
+    @Override
+    public void end(boolean interupt){
         intake.intakeStop();
+        intake.pivotDropOff();
     }
+    @Override
+    public boolean isFinished(){
+        return intake.isCoralDetected();
+    }
+
 
 }

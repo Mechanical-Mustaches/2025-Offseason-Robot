@@ -12,6 +12,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase{
+
+    SwerveDriveSubsystem swerve;
     
     private SparkMax intakeMotor = new SparkMax(99, MotorType.kBrushless);
     private SparkMax intakePivotLeft = new SparkMax(98, MotorType.kBrushless);
@@ -58,6 +60,14 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public void intakeStop(){
         intakeMotor.set(0);
+    }
+
+    public boolean isCoralDetected(){
+        if ((swerve.leftDistanceSensor.getRange() + swerve.rightDistanceSensor.getRange())/2 < 5){
+            return true;
+        } else{
+            return false;
+        }
     }
 }
 
