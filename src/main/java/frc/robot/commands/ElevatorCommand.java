@@ -15,8 +15,12 @@ public class ElevatorCommand extends Command {
     @Override
     public void initialize() {
         elevator.setPosition(targetLevel);
-        if (targetLevel != ElevatorSubsystem.Level.LIntake){
-            
+        if (targetLevel == ElevatorSubsystem.Level.LIntake){
+            elevator.armDown();
+        } else if (targetLevel == ElevatorSubsystem.Level.L4){
+            elevator.armScoreL4();
+        } else {
+            elevator.armScore();
         }
     }
 }

@@ -75,9 +75,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getArmEncoderValue(){
         return armPivot.getEncoder().getPosition();
     }
-
-    public void armUp(){
-        armPivot.getClosedLoopController().setReference(1, ControlType.kPosition);
+    public void armScore(){
+        armPivot.getClosedLoopController().setReference(9, ControlType.kPosition);
+    }
+    public void armScoreL4(){
+        armPivot.getClosedLoopController().setReference(10, ControlType.kPosition);
     }
     public void armDown(){
         armPivot.getClosedLoopController().setReference(0, ControlType.kPosition);

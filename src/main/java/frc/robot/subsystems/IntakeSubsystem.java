@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -8,7 +7,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.thethriftybot.ThriftyNova.PIDConfig;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -45,8 +44,12 @@ public class IntakeSubsystem extends SubsystemBase{
         return intakePivotLeft.getEncoder().getPosition();
     }
 
-    public void pivotDown(){
+    public void pivotPickUp(){
         intakePivotLeft.getClosedLoopController().setReference(0, ControlType.kPosition);
+    }
+
+    public void pivotDropOff(){
+        intakePivotLeft.getClosedLoopController().setReference(1, ControlType.kPosition);
     }
 
     public void intakeSpin(){

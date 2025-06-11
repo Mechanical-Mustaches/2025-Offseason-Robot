@@ -46,6 +46,7 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putNumber("Test", 1);
   }
 
 
