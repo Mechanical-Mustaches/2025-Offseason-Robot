@@ -73,36 +73,36 @@ public class RobotContainer {
 
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
 
     // Elevator
-      m_gunnerController.button(3)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
-      m_gunnerController.button(6)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
-         m_gunnerController.button(9)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
-      m_gunnerController.button(12)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
+    //   m_gunnerController.button(3)
+    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
+    //   m_gunnerController.button(6)
+    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
+    //      m_gunnerController.button(9)
+    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
+    //   m_gunnerController.button(12)
+    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
 
-    //  Game Pieces
-      m_gunnerController.button(5);
-      m_gunnerController.button(8);
-      m_gunnerController.button(11)
-          .whileTrue(new IntakeCommand(intakeSubsystem));
+    // //  Game Pieces
+    //   m_gunnerController.button(5);
+    //   m_gunnerController.button(8);
+    //   m_gunnerController.button(11)
+    //       .whileTrue(new IntakeCommand(intakeSubsystem));
     
     //  Climber
-      m_gunnerController.button(4)
-          .whileTrue(new InstantCommand(() -> climberSubsystem.reverseClimb()))
-          .whileFalse(new InstantCommand(() -> climberSubsystem.reverseClimb()));
-      m_gunnerController.button(7);
-      m_gunnerController.button(10);
-  }
+  //     m_gunnerController.button(4)
+  //         .whileTrue(new InstantCommand(() -> climberSubsystem.reverseClimb()))
+  //         .whileFalse(new InstantCommand(() -> climberSubsystem.reverseClimb()));
+  //     m_gunnerController.button(7);
+  //     m_gunnerController.button(10);
+   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

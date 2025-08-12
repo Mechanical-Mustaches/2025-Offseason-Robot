@@ -12,36 +12,36 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberSubsystem extends SubsystemBase{
 
-    private SparkMax climberMotor = new SparkMax(93, MotorType.kBrushless);
+//     private SparkMax climberMotor = new SparkMax(93, MotorType.kBrushless);
 
-    public ClimberSubsystem() {
-        SparkMaxConfig climberConfig = new SparkMaxConfig();
-        ClosedLoopConfig pidConfig = new ClosedLoopConfig();
+//     public ClimberSubsystem() {
+//         SparkMaxConfig climberConfig = new SparkMaxConfig();
+//         ClosedLoopConfig pidConfig = new ClosedLoopConfig();
 
-        pidConfig
-            .pid(0.1, 0, 0)
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+//         pidConfig
+//             .pid(0.1, 0, 0)
+//             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
-        climberConfig
-            .smartCurrentLimit(50)
-            .idleMode(IdleMode.kBrake)
-            .apply(pidConfig);
+//         climberConfig
+//             .smartCurrentLimit(50)
+//             .idleMode(IdleMode.kBrake)
+//             .apply(pidConfig);
 
-            climberMotor.configure(climberConfig, null, null);
-    }
-    public double getEncoderValue(){
-        return climberMotor.getEncoder().getPosition();
-    }
+//             climberMotor.configure(climberConfig, null, null);
+//     }
+//     public double getEncoderValue(){
+//         return climberMotor.getEncoder().getPosition();
+//     }
 
-    public void climb(){
-        climberMotor.getClosedLoopController().setReference(10, ControlType.kPosition);
-    }
+//     public void climb(){
+//         climberMotor.getClosedLoopController().setReference(10, ControlType.kPosition);
+//     }
 
-    public void reverseClimb(){
-        climberMotor.set(-0.2);
-    }
+//     public void reverseClimb(){
+//         climberMotor.set(-0.2);
+//     }
 
-    public void stopClimb(){
-        climberMotor.set(0);
-    }
+//     public void stopClimb(){
+//         climberMotor.set(0);
+//     }
 }
