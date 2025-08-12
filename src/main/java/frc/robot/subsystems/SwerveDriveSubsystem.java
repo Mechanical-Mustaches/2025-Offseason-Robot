@@ -33,6 +33,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -58,8 +59,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
 
   public TimeOfFlight leftDistanceSensor = new TimeOfFlight(31);
-    public TimeOfFlight rightDistanceSensor = new TimeOfFlight(30);
-
+  public TimeOfFlight rightDistanceSensor = new TimeOfFlight(30);
 
   /**
    * Enable vision odometry updates while driving.
@@ -85,14 +85,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     // objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED, startingPose);
+      File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(), "swerve");
+      swerveDrive = new SwerveParser(swerveJsonDirectory).createSwerveDrive(Constants.MAX_SPEED, startingPose);
       // Alternative method if you don't want to supply the conversion factor via JSON
       // files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed,
       // angleConversionFactor, driveConversionFactor);
     } catch (Exception e) {
       throw new RuntimeException(e);
-    } 
+    }
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via
                                              // angle.
     swerveDrive.setCosineCompensator(false);// !SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for
