@@ -32,12 +32,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SparkMax leftEleMotor = new SparkMax(96, MotorType.kBrushless);
     private SparkMax rightEleMotor = new SparkMax(95, MotorType.kBrushless);
-    private SparkMax armPivot = new SparkMax(94, MotorType.kBrushless);
+    private SparkMax pivotMotor = new SparkMax(94, MotorType.kBrushless);
 
     public ElevatorSubsystem() {
         SparkMaxConfig leftConfig = new SparkMaxConfig();
         SparkMaxConfig rightConfig = new SparkMaxConfig();
-        SparkMaxConfig armPivotConfig = new SparkMaxConfig();
+        SparkMaxConfig pivotConfig = new SparkMaxConfig();
         ClosedLoopConfig pidEleConfig = new ClosedLoopConfig();
         ClosedLoopConfig pidArmConfig = new ClosedLoopConfig();
 
@@ -58,14 +58,14 @@ public class ElevatorSubsystem extends SubsystemBase {
                 .apply(leftConfig)
                 .follow(96, true);
 
-        armPivotConfig
+        pivotConfig
                 .smartCurrentLimit(40)
                 .idleMode(IdleMode.kBrake)
                 .apply(pidArmConfig);
 
         leftEleMotor.configure(leftConfig, null, null);
         rightEleMotor.configure(rightConfig, null, null);
-        armPivot.configure(armPivotConfig, null, null);
+        pivotMotor.configure(pivotConfig, null, null);
     }
 
     public void setElevatorPosition(Level targetLevel) {
@@ -78,14 +78,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getArmEncoderValue() {
-        return armPivot.getEncoder().getPosition();
+        return pivotMotor.getEncoder().getPosition();
     }
 
-    public void setArmPosition(Level targetLevel, Boolean flipScoringSide) {
+    public void setPivotPosition(Level targetLevel, Boolean flipScoringSide) {
         if (flipScoringSide) {
-            armPivot.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue), ControlType.kPosition);
+            pivotMotor.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue),
+                    ControlType.kPosition);
         } else {
-            armPivot.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition);
+            pivotMotor.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition);
         }
     }
 
