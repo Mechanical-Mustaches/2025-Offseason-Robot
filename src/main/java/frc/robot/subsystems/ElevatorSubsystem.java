@@ -11,77 +11,82 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    
-//     public enum Level{
-//         LIntake(0),
-//         L1(1),
-//         L2(2),
-//         L3(3),
-//         L4(4);
 
-//         public final double encoderValue;
+    public enum Level {
+        LDefault(0, 0),
+        LIntake(0.5, 0.5),
+        L1(1, 0.1),
+        L2(2, 0.2),
+        L3(3, 0.3),
+        L4(4, 0.4);
 
-//         private Level(double encoder) {
-//             this.encoderValue = encoder;
-//         }
-//     }
+        public final double elevatorEncoderValue;
+        public final double pivotEncoderValue;
 
-//     private SparkMax leftEleMotor = new SparkMax(96, MotorType.kBrushless);
-//     private SparkMax rightEleMotor = new SparkMax(95, MotorType.kBrushless);
-//     private SparkMax armPivot = new SparkMax(94, MotorType.kBrushless);
+        private Level(double elevatorEncoder, double pivotEncoder) {
+            this.elevatorEncoderValue = elevatorEncoder;
+            this.pivotEncoderValue = pivotEncoder;
 
-//     public ElevatorSubsystem(){
-//         SparkMaxConfig leftConfig = new SparkMaxConfig();
-//         SparkMaxConfig rightConfig = new SparkMaxConfig();
-//         SparkMaxConfig armPivotConfig = new SparkMaxConfig();
-//         ClosedLoopConfig pidEleConfig = new ClosedLoopConfig();
-//         ClosedLoopConfig pidArmConfig = new ClosedLoopConfig();
+        }
+    }
 
-//         pidEleConfig
-//             .pidf(0.1, 0, 0, 0.001)
-//             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+    private SparkMax leftEleMotor = new SparkMax(96, MotorType.kBrushless);
+    private SparkMax rightEleMotor = new SparkMax(95, MotorType.kBrushless);
+    private SparkMax armPivot = new SparkMax(94, MotorType.kBrushless);
 
-//         pidArmConfig
-//             .pid(0.1, 0, 0)
-//             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        
-//         leftConfig
-//             .smartCurrentLimit(40)
-//             .idleMode(IdleMode.kBrake)
-//             .apply(pidEleConfig);
+    public ElevatorSubsystem() {
+        SparkMaxConfig leftConfig = new SparkMaxConfig();
+        SparkMaxConfig rightConfig = new SparkMaxConfig();
+        SparkMaxConfig armPivotConfig = new SparkMaxConfig();
+        ClosedLoopConfig pidEleConfig = new ClosedLoopConfig();
+        ClosedLoopConfig pidArmConfig = new ClosedLoopConfig();
 
-//         rightConfig
-//             .apply(leftConfig)
-//             .follow(96, true);
+        pidEleConfig
+                .pidf(0.1, 0, 0, 0.001)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-//         armPivotConfig
-//             .smartCurrentLimit(40)
-//             .idleMode(IdleMode.kBrake)
-//             .apply(pidArmConfig);
+        pidArmConfig
+                .pid(0.1, 0, 0)
+                .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-//         leftEleMotor.configure(leftConfig, null, null);
-//         rightEleMotor.configure(rightConfig, null, null);
-//         armPivot.configure(armPivotConfig, null, null);
-//     }
+        leftConfig
+                .smartCurrentLimit(40)
+                .idleMode(IdleMode.kBrake)
+                .apply(pidEleConfig);
 
-//     public void setPosition(Level targetLevel) {
-//         leftEleMotor.getClosedLoopController().setReference(targetLevel.encoderValue, ControlType.kPosition);
-//         //Sketchy
-//     }
+        rightConfig
+                .apply(leftConfig)
+                .follow(96, true);
 
-//     public double getEleEncoderValue(){
-//         return leftEleMotor.getEncoder().getPosition();
-//     }
-//     public double getArmEncoderValue(){
-//         return armPivot.getEncoder().getPosition();
-//     }
-//     public void armScore(){
-//         armPivot.getClosedLoopController().setReference(9, ControlType.kPosition);
-//     }
-//     public void armScoreL4(){
-//         armPivot.getClosedLoopController().setReference(10, ControlType.kPosition);
-//     }
-//     public void armDown(){
-//         armPivot.getClosedLoopController().setReference(0, ControlType.kPosition);
-//     }
+        armPivotConfig
+                .smartCurrentLimit(40)
+                .idleMode(IdleMode.kBrake)
+                .apply(pidArmConfig);
+
+        leftEleMotor.configure(leftConfig, null, null);
+        rightEleMotor.configure(rightConfig, null, null);
+        armPivot.configure(armPivotConfig, null, null);
+    }
+
+    public void setElevatorPosition(Level targetLevel) {
+        leftEleMotor.getClosedLoopController().setReference(targetLevel.elevatorEncoderValue, ControlType.kPosition);
+        // Sketchy
+    }
+
+    public double getEleEncoderValue() {
+        return leftEleMotor.getEncoder().getPosition();
+    }
+
+    public double getArmEncoderValue() {
+        return armPivot.getEncoder().getPosition();
+    }
+
+    public void setArmPosition(Level targetLevel, Boolean flipScoringSide) {
+        if (flipScoringSide) {
+            armPivot.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue), ControlType.kPosition);
+        } else {
+            armPivot.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition);
+        }
+    }
+
 }
