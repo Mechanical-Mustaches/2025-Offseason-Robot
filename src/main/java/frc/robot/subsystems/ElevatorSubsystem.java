@@ -31,9 +31,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     }
 
-    private SparkMax leftEleMotor = new SparkMax(96, MotorType.kBrushless);
-    private SparkMax rightEleMotor = new SparkMax(95, MotorType.kBrushless);
-    private SparkMax pivotMotor = new SparkMax(94, MotorType.kBrushless);
+    private SparkMax leftEleMotor = new SparkMax(11, MotorType.kBrushless);
+    private SparkMax rightEleMotor = new SparkMax(12, MotorType.kBrushless);
+    private SparkMax pivotMotor = new SparkMax(9, MotorType.kBrushless);
 
     public ElevatorSubsystem() {
         SparkMaxConfig leftConfig = new SparkMaxConfig();

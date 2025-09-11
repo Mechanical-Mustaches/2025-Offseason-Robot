@@ -14,51 +14,47 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SwerveDriveSubsystem swerve;
 
-    private SparkMax intakeMotor = new SparkMax(99, MotorType.kBrushless);
-    private SparkMax intakePivotLeft = new SparkMax(98, MotorType.kBrushless);
-    private SparkMax intakePivotRight = new SparkMax(97, MotorType.kBrushless);
+    private SparkMax centeringMotor = new SparkMax(13, MotorType.kBrushless);
+    private SparkMax intakingMotor = new SparkMax(14, MotorType.kBrushless);
+    private SparkMax pivotMotor = new SparkMax(15, MotorType.kBrushless);
 
     public IntakeSubsystem() {
-        SparkMaxConfig leftConfig = new SparkMaxConfig();
-        SparkMaxConfig rightConfig = new SparkMaxConfig();
+        SparkMaxConfig pivotConfig = new SparkMaxConfig();
         ClosedLoopConfig pidConfig = new ClosedLoopConfig();
 
         pidConfig
                 .pid(0.1, 0, 0)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-        leftConfig
+        pivotConfig
                 .smartCurrentLimit(30)
                 .idleMode(IdleMode.kBrake)
                 .apply(pidConfig);
 
-        rightConfig
-                .apply(leftConfig)
-                .follow(98, true);
-
-        intakePivotLeft.configure(leftConfig, null, null);
-        intakePivotRight.configure(rightConfig, null, null);
+        pivotMotor.configure(pivotConfig, null, null);
 
     }
 
     public double getEncoderValue() {
-        return intakePivotLeft.getEncoder().getPosition();
+        return pivotMotor.getEncoder().getPosition();
     }
 
     public void pivotPickUp() {
-        intakePivotLeft.getClosedLoopController().setReference(0, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(0, ControlType.kPosition);
     }
 
     public void pivotDropOff() {
-        intakePivotLeft.getClosedLoopController().setReference(1, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(1, ControlType.kPosition);
     }
 
     public void intakeSpin() {
-        intakeMotor.set(0.5);
+        intakingMotor.set(0.5);
+        centeringMotor.set(0.5);
     }
 
     public void intakeStop() {
-        intakeMotor.set(0);
+        intakingMotor.set(0);
+        centeringMotor.set(0);
     }
 
     public boolean isCoralDetected() {

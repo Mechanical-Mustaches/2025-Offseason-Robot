@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class EndEffector extends SubsystemBase {
 
-    private SparkMax endEffectorMotor = new SparkMax(93, MotorType.kBrushless);
+    private SparkMax endEffectorMotor = new SparkMax(10, MotorType.kBrushless);
 
     public EndEffector() {
         SparkMaxConfig endEffectorConfig = new SparkMaxConfig();
