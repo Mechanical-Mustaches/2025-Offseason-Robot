@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -71,14 +72,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setElevatorPosition(Level targetLevel) {
         leftEleMotor.getClosedLoopController().setReference(targetLevel.elevatorEncoderValue, ControlType.kPosition);
-        // Sketchy
     }
 
     public double getEleEncoderValue() {
         return leftEleMotor.getEncoder().getPosition();
     }
 
-    public double getArmEncoderValue() {
+    public double getPivotEncoderValue() {
         return pivotMotor.getEncoder().getPosition();
     }
 
@@ -89,6 +89,15 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else {
             pivotMotor.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition);
         }
+    }
+
+    @Override
+    public void periodic() {
+
+        SmartDashboard.putNumber("ElevatorEncoder: ", getEleEncoderValue());
+        SmartDashboard.putNumber("ElevatorAmperage: ", leftEleMotor.getOutputCurrent());
+        SmartDashboard.putNumber("PivotEncoder: ", getPivotEncoderValue());
+        SmartDashboard.putNumber("PivotAmperage: ", pivotMotor.getOutputCurrent());
     }
 
 }
