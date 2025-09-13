@@ -7,11 +7,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class EndEffector extends SubsystemBase {
+public class EndEffectorSubsystem extends SubsystemBase {
 
     private SparkMax endEffectorMotor = new SparkMax(10, MotorType.kBrushless);
 
-    public EndEffector() {
+    public EndEffectorSubsystem() {
         SparkMaxConfig endEffectorConfig = new SparkMaxConfig();
 
         endEffectorConfig
