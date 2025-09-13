@@ -80,28 +80,22 @@ public class RobotContainer {
     // cancelling on release.
     
 
-    // Elevator
-    //   m_gunnerController.button(3)
-    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
-    //   m_gunnerController.button(6)
-    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
-    //      m_gunnerController.button(9)
-    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
-    //   m_gunnerController.button(12)
-    //      .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
+  //  Elevator
+      m_gunnerController.button(3)
+         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
+      m_gunnerController.button(6)
+         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
+         m_gunnerController.button(9)
+         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
+      m_gunnerController.button(12)
+         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
 
-    // //  Game Pieces
-    //   m_gunnerController.button(5);
-    //   m_gunnerController.button(8);
-    //   m_gunnerController.button(11)
-    //       .whileTrue(new IntakeCommand(intakeSubsystem));
+    //  Game Pieces
+      m_gunnerController.button(5);
+      m_gunnerController.button(8);
+      m_gunnerController.button(11)
+          .whileTrue(new IntakeCommand(intakeSubsystem));
     
-    //  Climber
-  //     m_gunnerController.button(4)
-  //         .whileTrue(new InstantCommand(() -> climberSubsystem.reverseClimb()))
-  //         .whileFalse(new InstantCommand(() -> climberSubsystem.reverseClimb()));
-  //     m_gunnerController.button(7);
-  //     m_gunnerController.button(10);
    }
 
   /**
