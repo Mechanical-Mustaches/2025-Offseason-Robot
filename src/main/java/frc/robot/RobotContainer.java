@@ -23,80 +23,79 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveDriveSubsystem swerveDriveSubsystem;
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private final ElevatorSubsystem  elevatorSubsystem = new ElevatorSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final EndEffectorSubsystem endEffectorSubsystem = new EndEffectorSubsystem();
 
-   private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
-
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController = new CommandXboxController(
+      OperatorConstants.kDriverControllerPort);
 
   private final XboxController driverController_HID = m_driverController.getHID();
 
   private final CommandGenericHID m_gunnerController = new CommandGenericHID(OperatorConstants.kGunnerControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     swerveDriveSubsystem = new SwerveDriveSubsystem(null);
 
     // Configure the trigger bindings
     configureBindings();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putNumber("Test", 1);
 
-
     swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
-                  () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(1), 0.1),
-                  () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(0), 0.1),
-                  () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(4), 0.1)));
+        () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(1), 0.1),
+        () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(0), 0.1),
+        () -> -MathUtil.applyDeadband(driverController_HID.getRawAxis(4), 0.1)));
   }
-
-
 
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is
+    // pressed,
     // cancelling on release.
-    
 
-  //  Elevator
-      m_gunnerController.button(3)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
-      m_gunnerController.button(6)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
-      m_gunnerController.button(9)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
-      m_gunnerController.button(12)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
-      m_gunnerController.button(5)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LSource));
-      m_gunnerController.button(8)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LIntake));
-      m_gunnerController.button(11)
-         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LDefault));
+    // Elevator
+    m_gunnerController.button(3)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
+    m_gunnerController.button(6)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
+    m_gunnerController.button(9)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
+    m_gunnerController.button(12)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
+    m_gunnerController.button(5)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LSource));
+    m_gunnerController.button(8)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LIntake));
+    m_gunnerController.button(11)
+        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LDefault));
 
-    //  Game Pieces
-      m_gunnerController.button(10)
-         .whileTrue(new IntakeCommand(intakeSubsystem));
-      m_gunnerController.button(2)
-         .whileTrue(new ScoreCommand(endEffectorSubsystem));
-    
-   }
+    // Game Pieces
+    // m_gunnerController.button(10)
+    // .whileTrue(new IntakeCommand(intakeSubsystem));
+    m_gunnerController.button(2)
+        .whileTrue(new ScoreCommand(endEffectorSubsystem));
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

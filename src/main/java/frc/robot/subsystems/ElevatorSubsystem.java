@@ -58,7 +58,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         rightConfig
                 .apply(leftConfig)
-                .follow(96, true);
+                .follow(11, true);
 
         pivotConfig
                 .smartCurrentLimit(40)

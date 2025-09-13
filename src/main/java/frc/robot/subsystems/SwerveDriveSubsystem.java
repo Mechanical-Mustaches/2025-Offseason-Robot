@@ -58,8 +58,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    */
   private final SwerveDrive swerveDrive;
 
-  public TimeOfFlight leftDistanceSensor = new TimeOfFlight(31);
-  public TimeOfFlight rightDistanceSensor = new TimeOfFlight(30);
+  // public TimeOfFlight leftDistanceSensor = new TimeOfFlight(31);
+  // public TimeOfFlight rightDistanceSensor = new TimeOfFlight(30);
 
   /**
    * Enable vision odometry updates while driving.
