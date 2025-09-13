@@ -58,7 +58,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         rightConfig
                 .apply(leftConfig)
-                .follow(96, true);
+                .follow(11, true);
 
         pivotConfig
                 .smartCurrentLimit(40)
@@ -80,6 +80,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double getPivotEncoderValue() {
         return pivotMotor.getEncoder().getPosition();
+    }
+
+    public void dumbEleUp(){
+        leftEleMotor.set(0.2);
+    }
+
+    public void dumbEleDown(){
+        leftEleMotor.set(-0.2);
     }
 
     public void setPivotPosition(Level targetLevel, Boolean flipScoringSide) {
