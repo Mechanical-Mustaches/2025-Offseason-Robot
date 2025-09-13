@@ -19,49 +19,50 @@ public class IntakeSubsystem extends SubsystemBase {
     private SparkMax pivotMotor = new SparkMax(15, MotorType.kBrushless);
 
     public IntakeSubsystem() {
-        SparkMaxConfig pivotConfig = new SparkMaxConfig();
-        ClosedLoopConfig pidConfig = new ClosedLoopConfig();
+        // SparkMaxConfig pivotConfig = new SparkMaxConfig();
+        // ClosedLoopConfig pidConfig = new ClosedLoopConfig();
 
-        pidConfig
-                .pid(0.1, 0, 0)
-                .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        // pidConfig
+        // .pid(0.1, 0, 0)
+        // .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
-        pivotConfig
-                .smartCurrentLimit(30)
-                .idleMode(IdleMode.kBrake)
-                .apply(pidConfig);
+        // pivotConfig
+        // .smartCurrentLimit(30)
+        // .idleMode(IdleMode.kBrake)
+        // .apply(pidConfig);
 
-        pivotMotor.configure(pivotConfig, null, null);
+        // pivotMotor.configure(pivotConfig, null, null);
 
-    }
+        // }
 
-    public double getEncoderValue() {
-        return pivotMotor.getEncoder().getPosition();
-    }
+        // public double getEncoderValue() {
+        // return pivotMotor.getEncoder().getPosition();
+        // }
 
-    public void pivotPickUp() {
-        pivotMotor.getClosedLoopController().setReference(0, ControlType.kPosition);
-    }
+        // public void pivotPickUp() {
+        // pivotMotor.getClosedLoopController().setReference(0, ControlType.kPosition);
+        // }
 
-    public void pivotDropOff() {
-        pivotMotor.getClosedLoopController().setReference(1, ControlType.kPosition);
-    }
+        // public void pivotDropOff() {
+        // pivotMotor.getClosedLoopController().setReference(1, ControlType.kPosition);
+        // }
 
-    public void intakeSpin() {
-        intakingMotor.set(0.5);
-        centeringMotor.set(0.5);
-    }
+        // public void intakeSpin() {
+        // intakingMotor.set(0.5);
+        // centeringMotor.set(0.5);
+        // }
 
-    public void intakeStop() {
-        intakingMotor.set(0);
-        centeringMotor.set(0);
-    }
+        // public void intakeStop() {
+        // intakingMotor.set(0);
+        // centeringMotor.set(0);
+        // }
 
-    public boolean isCoralDetected() {
-        if ((swerve.leftDistanceSensor.getRange() + swerve.rightDistanceSensor.getRange()) / 2 < 5) {
-            return true;
-        } else {
-            return false;
-        }
+        // public boolean isCoralDetected() {
+        // if ((swerve.leftDistanceSensor.getRange() +
+        // swerve.rightDistanceSensor.getRange()) / 2 < 5) {
+        // return true;
+        // } else {
+        // return false;
+        // }
     }
 }
