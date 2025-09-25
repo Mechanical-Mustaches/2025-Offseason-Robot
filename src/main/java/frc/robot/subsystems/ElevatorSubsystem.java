@@ -82,11 +82,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         return pivotMotor.getEncoder().getPosition();
     }
 
-    public void dumbEleUp(){
+    public void dumbEleUp() {
         leftEleMotor.set(0.2);
     }
 
-    public void dumbEleDown(){
+    public void dumbEleDown() {
         leftEleMotor.set(-0.2);
     }
 
@@ -108,8 +108,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("ElevatorEncoder: ", getEleEncoderValue());
         SmartDashboard.putNumber("ElevatorAmperage: ", leftEleMotor.getOutputCurrent());
-        SmartDashboard.putNumber("PivotEncoder: ", getPivotEncoderValue());
-        SmartDashboard.putNumber("PivotAmperage: ", pivotMotor.getOutputCurrent());
+        SmartDashboard.putNumber("ElevatorPivotEncoder: ", getPivotEncoderValue());
+        SmartDashboard.putNumber("ElevatorPivotAmperage: ", pivotMotor.getOutputCurrent());
     }
 
 }
