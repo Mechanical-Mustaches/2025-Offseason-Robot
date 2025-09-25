@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ElevatorCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
@@ -88,6 +90,16 @@ public class RobotContainer {
         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LIntake));
     m_gunnerController.button(11)
         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LDefault));
+
+    m_driverController.povUp().onTrue(
+        new InstantCommand(() -> elevatorSubsystem.dumbEleUp()));
+    m_driverController.povUp().onFalse(
+        new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
+    m_driverController.povDown().onTrue(
+        new InstantCommand(() -> elevatorSubsystem.dumbEleDown()));
+    m_driverController.povDown().onFalse(
+        new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
+    
 
     // Game Pieces
     // m_gunnerController.button(10)

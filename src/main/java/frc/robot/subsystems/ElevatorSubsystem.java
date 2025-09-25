@@ -90,6 +90,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftEleMotor.set(-0.2);
     }
 
+    public void dumbEleStop(){
+        leftEleMotor.set(0);
+    }
+
     public void setPivotPosition(Level targetLevel, Boolean flipScoringSide) {
         if (flipScoringSide) {
             pivotMotor.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue),

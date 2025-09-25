@@ -4,7 +4,15 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.estimation.CameraTargetRelation;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cameraserver.CameraServerShared;
+import edu.wpi.first.cameraserver.CameraServerSharedStore;
+import edu.wpi.first.cscore.CameraServerJNI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,6 +25,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+
+  PhotonCamera camera;
+  boolean targetSeen = false;
+  double targetYaw = 0.0;
 
   private final RobotContainer m_robotContainer;
 
@@ -51,6 +63,11 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+
+    SmartDashboard.putBoolean("CameraAprilTagDetection", targetSeen);
+    SmartDashboard.putNumber("CameraAprilTagYaw", targetYaw);
+
+
     CommandScheduler.getInstance().run();
   }
 
@@ -96,6 +113,23 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+    var results = camera.getAllUnreadResults();
+    if (!results.isEmpty()) {
+        // Camera processed a new frame since last
+        // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+            // At least one AprilTag was seen by the camera
+            for (var target : result.getTargets()) {
+                if (target.getFiducialId() == 7) {
+                    // Found Tag 7, record its information
+                    targetYaw = target.getYaw();
+                    targetSeen = true;
+                 }
+           }
+        }
+      }
   }
 
   @Override
