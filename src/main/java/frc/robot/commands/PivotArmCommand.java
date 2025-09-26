@@ -7,7 +7,7 @@ import frc.robot.subsystems.ElevatorSubsystem.Level;
 public class PivotArmCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final ElevatorSubsystem.Level targetLevel;
-    boolean ArmFlipState;
+    static public boolean ArmFlipState;
     
     public PivotArmCommand(ElevatorSubsystem subsystem, ElevatorSubsystem.Level level, boolean ArmFlip) {
         elevator = subsystem;

@@ -19,6 +19,10 @@ public class ElevatorCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        if (elevator.getEleEncoderValue() >= (targetLevel.elevatorEncoderValue - 2) || elevator.getEleEncoderValue() <= (targetLevel.elevatorEncoderValue +2)){
+            return true;
+        } else{
+            return false;
+        }
     }
 }

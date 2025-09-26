@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.ElevatorSequentialCommand;
 import frc.robot.commands.PivotArmCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -77,16 +78,18 @@ public class RobotContainer {
     // cancelling on release.
 
     // Elevator
-    // m_gunnerController.button(3)
-    //     .whileTrue(new SequentialCommandGroup(
-    //         new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4)),
-    //         new PivotArmCommand(elevatorSubsystem, ElevatorSubsystemLevel.Level.L4, true));
+    m_gunnerController.button(3)
+        .whileTrue(new ElevatorSequentialCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4, 
+        m_gunnerController.button(7).getAsBoolean()));
     m_gunnerController.button(6)
-        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
+        .whileTrue(new ElevatorSequentialCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3, 
+        m_gunnerController.button(7).getAsBoolean()));
     m_gunnerController.button(9)
-        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2));
+        .whileTrue(new ElevatorSequentialCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2, 
+        m_gunnerController.button(7).getAsBoolean()));
     m_gunnerController.button(12)
-        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1));
+        .whileTrue(new ElevatorSequentialCommand(elevatorSubsystem, ElevatorSubsystem.Level.L1, 
+        m_gunnerController.button(7).getAsBoolean()));
     m_gunnerController.button(5)
         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LSource));
     m_gunnerController.button(8)
