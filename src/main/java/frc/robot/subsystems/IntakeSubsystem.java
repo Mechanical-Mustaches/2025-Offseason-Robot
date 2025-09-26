@@ -45,7 +45,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void pivotDropOff() {
-        pivotMotor.getClosedLoopController().setReference(1, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(-56.0958, ControlType.kPosition);
     }
 
     public void intakeSpin() {
