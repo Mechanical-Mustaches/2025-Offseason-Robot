@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -18,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private SparkMax centeringMotor = new SparkMax(13, MotorType.kBrushless);
     private SparkMax intakingMotor = new SparkMax(15, MotorType.kBrushless);
     private SparkMax pivotMotor = new SparkMax(14, MotorType.kBrushless);
+    private SparkLimitSwitch lineBreakSensor = centeringMotor.getForwardLimitSwitch();
 
     public IntakeSubsystem() {
         SparkMaxConfig pivotConfig = new SparkMaxConfig();
@@ -41,11 +43,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void pivotPickUp() {
-        pivotMotor.getClosedLoopController().setReference(0, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(-1.8, ControlType.kPosition);
     }
 
     public void pivotDropOff() {
-        pivotMotor.getClosedLoopController().setReference(1, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(58, ControlType.kPosition);
     }
 
     public void intakeSpin() {
@@ -69,6 +71,18 @@ public class IntakeSubsystem extends SubsystemBase {
         centeringMotor.set(0);
     }
 
+    public void centerCoral() {
+        centeringMotor.set(0.2);
+    }
+
+    public boolean isCoralDetected() {
+        return lineBreakSensor.isPressed();
+    }
+
+    public void stopCenteringCoral() {
+        centeringMotor.set(0);
+    }
+
     // public boolean isCoralDetected() {
     // if ((swerve.leftDistanceSensor.getRange() +
     // swerve.rightDistanceSensor.getRange()) / 2 < 5) {
@@ -80,6 +94,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("coralCentered", isCoralDetected());
         SmartDashboard.putNumber("IntakePivotEncoderValue", pivotMotor.getEncoder().getPosition());
     }
 }
