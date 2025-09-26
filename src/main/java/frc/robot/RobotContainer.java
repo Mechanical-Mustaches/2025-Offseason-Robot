@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.PivotArmCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.EndEffectorSubsystem;
@@ -76,8 +77,10 @@ public class RobotContainer {
     // cancelling on release.
 
     // Elevator
-    m_gunnerController.button(3)
-        .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4));
+    // m_gunnerController.button(3)
+    //     .whileTrue(new SequentialCommandGroup(
+    //         new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4)),
+    //         new PivotArmCommand(elevatorSubsystem, ElevatorSubsystemLevel.Level.L4, true));
     m_gunnerController.button(6)
         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.L3));
     m_gunnerController.button(9)
@@ -91,14 +94,24 @@ public class RobotContainer {
     m_gunnerController.button(11)
         .onTrue(new ElevatorCommand(elevatorSubsystem, ElevatorSubsystem.Level.LDefault));
 
+
     m_driverController.povUp().onTrue(
         new InstantCommand(() -> elevatorSubsystem.dumbEleUp()));
-    m_driverController.povUp().onFalse(
-        new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
+     m_driverController.povUp().onFalse(
+         new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
     m_driverController.povDown().onTrue(
         new InstantCommand(() -> elevatorSubsystem.dumbEleDown()));
-    m_driverController.povDown().onFalse(
-        new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
+     m_driverController.povDown().onFalse(
+         new InstantCommand(() -> elevatorSubsystem.dumbEleStop()));
+
+    m_driverController.povLeft().onTrue(
+        new InstantCommand(() -> intakeSubsystem.dumbIntakePivotIn()));
+     m_driverController.povLeft().onFalse(
+         new InstantCommand(() -> intakeSubsystem.dumbIntakePivotStop()));
+    m_driverController.povRight().onTrue(
+        new InstantCommand(() -> intakeSubsystem.dumbIntakePivotOut()));
+     m_driverController.povRight().onFalse(
+         new InstantCommand(() -> intakeSubsystem.dumbIntakePivotStop()));
     
 
     // Game Pieces

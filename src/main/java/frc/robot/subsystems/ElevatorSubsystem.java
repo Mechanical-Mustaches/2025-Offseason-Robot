@@ -15,12 +15,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public enum Level {
         LDefault(0, 0),
-        LIntake(0.5, 0.5),
-        LSource(0.75, 0.5),
-        L1(1, 0.1),
-        L2(2, 0.2),
-        L3(3, 0.3),
-        L4(4, 0.4);
+        LIntake(-51, 0.38956),
+        LSource(0.75, 0),
+        L1(0, 0.07575),
+        L2(-7, 0.07575),
+        L3(-24, 0.07575),
+        L4(-60, 0.07575);
 
         public final double elevatorEncoderValue;
         public final double pivotEncoderValue;
@@ -32,9 +32,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     }
 
-    private SparkMax leftEleMotor = new SparkMax(11, MotorType.kBrushless);
+    private SparkMax leftEleMotor = new SparkMax(20, MotorType.kBrushless);
     private SparkMax rightEleMotor = new SparkMax(12, MotorType.kBrushless);
     private SparkMax pivotMotor = new SparkMax(9, MotorType.kBrushless);
+    //private SparkMax o
 
     public ElevatorSubsystem() {
         SparkMaxConfig leftConfig = new SparkMaxConfig();
@@ -44,7 +45,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         ClosedLoopConfig pidArmConfig = new ClosedLoopConfig();
 
         pidEleConfig
-                .pidf(0.1, 0, 0, 0.001)
+                .pid(0.15, 0.00001, 0.1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
         pidArmConfig
@@ -58,7 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         rightConfig
                 .apply(leftConfig)
-                .follow(11, true);
+                .follow(leftEleMotor.getDeviceId(), true);
 
         pivotConfig
                 .smartCurrentLimit(40)
@@ -74,26 +75,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         leftEleMotor.getClosedLoopController().setReference(targetLevel.elevatorEncoderValue, ControlType.kPosition);
     }
 
-    public double getEleEncoderValue() {
-        return leftEleMotor.getEncoder().getPosition();
-    }
-
-    public double getPivotEncoderValue() {
-        return pivotMotor.getEncoder().getPosition();
-    }
-
-    public void dumbEleUp() {
-        leftEleMotor.set(0.2);
-    }
-
-    public void dumbEleDown() {
-        leftEleMotor.set(-0.2);
-    }
-
-    public void dumbEleStop(){
-        leftEleMotor.set(0);
-    }
-
     public void setPivotPosition(Level targetLevel, Boolean flipScoringSide) {
         if (flipScoringSide) {
             pivotMotor.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue),
@@ -103,6 +84,26 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     }
 
+    public double getEleEncoderValue() {
+        return leftEleMotor.getEncoder().getPosition();
+    }
+
+    public double getPivotEncoderValue() {
+        return pivotMotor.getEncoder().getPosition();
+    }
+
+    public void dumbEleUp() {
+        leftEleMotor.set(0.1);
+    }
+
+    public void dumbEleDown() {
+        leftEleMotor.set(-0.1);
+    }
+
+    public void dumbEleStop(){
+        leftEleMotor.set(0);
+    }
+
     @Override
     public void periodic() {
 
@@ -110,6 +111,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("ElevatorAmperage: ", leftEleMotor.getOutputCurrent());
         SmartDashboard.putNumber("ElevatorPivotEncoder: ", getPivotEncoderValue());
         SmartDashboard.putNumber("ElevatorPivotAmperage: ", pivotMotor.getOutputCurrent());
+        SmartDashboard.putNumber("ElevatorSpeed", leftEleMotor.get());
     }
 
 }

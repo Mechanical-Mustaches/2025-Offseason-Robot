@@ -53,6 +53,17 @@ public class IntakeSubsystem extends SubsystemBase {
         centeringMotor.set(0.5);
     }
 
+    public void dumbIntakePivotIn(){
+        pivotMotor.set(0.5);
+    }
+    public void dumbIntakePivotOut(){
+        pivotMotor.set(-0.5);
+    }
+    public void dumbIntakePivotStop(){
+        pivotMotor.set(0);
+    }
+    
+
     public void intakeStop() {
         intakingMotor.set(0);
         centeringMotor.set(0);
