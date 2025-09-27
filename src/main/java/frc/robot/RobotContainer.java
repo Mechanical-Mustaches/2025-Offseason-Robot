@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ElevatorSequentialCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PivotArmCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -78,6 +80,11 @@ public class RobotContainer {
     // cancelling on release.
 
     // Elevator
+
+    m_gunnerController.button(1)
+        .whileTrue(new PivotArmCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2, false));
+
+
     m_gunnerController.button(3)
         .whileTrue(new ElevatorSequentialCommand(elevatorSubsystem, ElevatorSubsystem.Level.L4, 
         m_gunnerController.button(7).getAsBoolean()));
@@ -118,8 +125,12 @@ public class RobotContainer {
     
 
     // Game Pieces
-    // m_gunnerController.button(10)
-    // .whileTrue(new IntakeCommand(intakeSubsystem));
+    m_gunnerController.button(10)
+    .whileTrue(new IntakeCommand(intakeSubsystem));
+    m_gunnerController.button(4).whileTrue(
+        new InstantCommand(() -> intakeSubsystem.intakeSpinOut()));
+     m_gunnerController.button(4).onFalse(
+         new InstantCommand(() -> intakeSubsystem.intakeStop()));
     m_gunnerController.button(2)
         .whileTrue(new ScoreCommand(endEffectorSubsystem));
 

@@ -17,11 +17,11 @@ public class IntakeCommand extends Command {
         intake.centerCoral();
     }
 
-    // @Override
-    // public void end(boolean interupt) {
-    // intake.intakeStop();
-    // intake.pivotDropOff();
-    // }
+    @Override
+    public void end(boolean interupt) {
+    intake.intakeStop();
+    intake.pivotDropOff();
+    }
 
     @Override
     public boolean isFinished() {

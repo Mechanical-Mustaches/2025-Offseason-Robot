@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Level;
@@ -17,20 +18,19 @@ public class PivotArmCommand extends Command {
 
     @Override
     public void initialize() {
-        if (ArmFlipState == true){
-            elevator.setPivotPosition(targetLevel, true);
-        } else {
-            elevator.setPivotPosition(targetLevel, false);
-        }
+        elevator.setPivotPosition(targetLevel, ArmFlipState);
     }
 
     @Override
-    public boolean isFinished() {
-        return true;
+    public void execute() {
+        SmartDashboard.putBoolean("armFlipState", ArmFlipState);
+        SmartDashboard.putNumber("armDesire", targetLevel.pivotEncoderValue);
     }
 
     @Override
     public void end(boolean interupt) {
-        elevator.setPivotPosition(Level.LDefault, null);
+        elevator.setPivotPosition(Level.LDefault, false);
     }
+
+
 }

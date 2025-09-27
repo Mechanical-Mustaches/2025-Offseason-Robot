@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig;
@@ -17,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
     SwerveDriveSubsystem swerve;
 
     private SparkMax centeringMotor = new SparkMax(13, MotorType.kBrushless);
-    private SparkMax intakingMotor = new SparkMax(15, MotorType.kBrushless);
+    private SparkFlex intakingMotor = new SparkFlex(15, MotorType.kBrushless);
     private SparkMax pivotMotor = new SparkMax(14, MotorType.kBrushless);
     private SparkLimitSwitch lineBreakSensor = centeringMotor.getForwardLimitSwitch();
 
@@ -47,12 +48,15 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void pivotDropOff() {
-        pivotMotor.getClosedLoopController().setReference(58, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(55, ControlType.kPosition);
     }
 
     public void intakeSpin() {
         intakingMotor.set(0.5);
-        centeringMotor.set(0.5);
+    }
+
+    public void intakeSpinOut(){
+        intakingMotor.set(-0.5);
     }
 
     public void dumbIntakePivotIn(){
@@ -65,14 +69,13 @@ public class IntakeSubsystem extends SubsystemBase {
         pivotMotor.set(0);
     }
     
-
     public void intakeStop() {
         intakingMotor.set(0);
         centeringMotor.set(0);
     }
 
     public void centerCoral() {
-        centeringMotor.set(0.2);
+        centeringMotor.set(0.5);
     }
 
     public boolean isCoralDetected() {
@@ -96,5 +99,6 @@ public class IntakeSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("coralCentered", isCoralDetected());
         SmartDashboard.putNumber("IntakePivotEncoderValue", pivotMotor.getEncoder().getPosition());
+        SmartDashboard.putNumber("IntakeAmperage", intakingMotor.getOutputCurrent());
     }
 }

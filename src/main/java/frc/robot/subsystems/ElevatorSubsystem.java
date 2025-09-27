@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -12,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
+
+    boolean flipScoringSide = false;
 
     public enum Level {
         LDefault(0, 0),
@@ -43,13 +46,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         SparkMaxConfig pivotConfig = new SparkMaxConfig();
         ClosedLoopConfig pidEleConfig = new ClosedLoopConfig();
         ClosedLoopConfig pidArmConfig = new ClosedLoopConfig();
+    
 
         pidEleConfig
                 .pid(0.15, 0.00001, 0.1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
         pidArmConfig
-                .pid(0.1, 0, 0)
+                //.pid(4, 0.0008, 10)
+              //  .pid(6, 0.0008, 10)
+                .pid(2.5, 0.000, 0, ClosedLoopSlot.kSlot0)
+                .pid(6, 0, 0,ClosedLoopSlot.kSlot1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
         leftConfig
@@ -76,11 +83,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setPivotPosition(Level targetLevel, Boolean flipScoringSide) {
+        if(targetLevel == Level.LDefault){
+            pivotMotor.getClosedLoopController().setReference(targetLevel.pivotEncoderValue,ControlType.kPosition,ClosedLoopSlot.kSlot1);
+        }
         if (flipScoringSide) {
             pivotMotor.getClosedLoopController().setReference((1 - targetLevel.pivotEncoderValue),
-                    ControlType.kPosition);
+                    ControlType.kPosition,ClosedLoopSlot.kSlot0);
         } else {
-            pivotMotor.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition);
+            pivotMotor.getClosedLoopController().setReference(targetLevel.pivotEncoderValue, ControlType.kPosition,ClosedLoopSlot.kSlot0);
         }
     }
 
@@ -112,6 +122,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("ElevatorPivotEncoder: ", getPivotEncoderValue());
         SmartDashboard.putNumber("ElevatorPivotAmperage: ", pivotMotor.getOutputCurrent());
         SmartDashboard.putNumber("ElevatorSpeed", leftEleMotor.get());
+        SmartDashboard.putBoolean("ElevatorFlip", flipScoringSide);
     }
 
 }
