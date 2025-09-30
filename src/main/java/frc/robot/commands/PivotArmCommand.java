@@ -18,7 +18,7 @@ public class PivotArmCommand extends Command {
 
     @Override
     public void initialize() {
-        elevator.setPivotPosition(targetLevel, ArmFlipState);
+        elevator.dumbPivotPID(targetLevel);
     }
 
     @Override

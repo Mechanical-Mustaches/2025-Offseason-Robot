@@ -17,7 +17,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     boolean flipScoringSide = false;
 
     public enum Level {
-        LDefault(0, 0),
+        LDefault(-3, 0),
         LIntake(-51, 0.38956),
         LSource(0.75, 0),
         L1(0, 0.07575),
@@ -57,6 +57,8 @@ public class ElevatorSubsystem extends SubsystemBase {
               //  .pid(6, 0.0008, 10)
                 .pid(2.5, 0.000, 0, ClosedLoopSlot.kSlot0)
                 .pid(6, 0, 0,ClosedLoopSlot.kSlot1)
+                // .pidf(2.5, 0.000, 0,1, ClosedLoopSlot.kSlot0)
+                // .pidf(2.5, 0, 0,1,ClosedLoopSlot.kSlot1)
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
 
         leftConfig
@@ -112,6 +114,26 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void dumbEleStop(){
         leftEleMotor.set(0);
+    }
+    
+    public void dumbPivotPID(Level targetLevel){
+        if(targetLevel.pivotEncoderValue < pivotMotor.getEncoder().getPosition()){
+            if (Math.abs(getPivotEncoderValue()-targetLevel.pivotEncoderValue)<= 0.02){
+                pivotMotor.set(-0.04);
+            } else{
+                pivotMotor.set(-0.1);  
+            }
+        } else {
+            if (Math.abs(getPivotEncoderValue()-targetLevel.pivotEncoderValue)<= 0.02){
+                pivotMotor.set(0.2);
+            } else{
+                pivotMotor.set(0.5);  
+            }
+        }
+    }
+
+    public boolean pivotAtPosition(Level targetLevel){
+        return(Math.abs(targetLevel.pivotEncoderValue - pivotMotor.getEncoder().getPosition()) <= .01);
     }
 
     @Override

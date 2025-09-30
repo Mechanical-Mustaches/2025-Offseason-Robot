@@ -18,9 +18,11 @@ public class IntakeSubsystem extends SubsystemBase {
     SwerveDriveSubsystem swerve;
 
     private SparkMax centeringMotor = new SparkMax(13, MotorType.kBrushless);
-    private SparkFlex intakingMotor = new SparkFlex(15, MotorType.kBrushless);
+    private SparkMax intakingMotor = new SparkMax(15, MotorType.kBrushless);
     private SparkMax pivotMotor = new SparkMax(14, MotorType.kBrushless);
     private SparkLimitSwitch lineBreakSensor = centeringMotor.getForwardLimitSwitch();
+
+    public double kIntakeL1Position = -28;
 
     public IntakeSubsystem() {
         SparkMaxConfig pivotConfig = new SparkMaxConfig();
@@ -44,11 +46,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void pivotPickUp() {
-        pivotMotor.getClosedLoopController().setReference(-1.8, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(-62, ControlType.kPosition);
     }
 
     public void pivotDropOff() {
-        pivotMotor.getClosedLoopController().setReference(55, ControlType.kPosition);
+        pivotMotor.getClosedLoopController().setReference(1.5, ControlType.kPosition);
     }
 
     public void intakeSpin() {
@@ -86,6 +88,18 @@ public class IntakeSubsystem extends SubsystemBase {
         centeringMotor.set(0);
     }
 
+    public void stopPivot(){
+        pivotMotor.set(0);
+    }
+
+    public void goToL1(){
+        pivotMotor.getClosedLoopController().setReference(kIntakeL1Position, ControlType.kPosition);
+    }
+
+    public boolean atPosition(double targetPosition){
+        return (Math.abs(pivotMotor.getEncoder().getPosition()-targetPosition) <= 2);
+    }
+
     // public boolean isCoralDetected() {
     // if ((swerve.leftDistanceSensor.getRange() +
     // swerve.rightDistanceSensor.getRange()) / 2 < 5) {
@@ -94,6 +108,13 @@ public class IntakeSubsystem extends SubsystemBase {
     // return false;
     // }
     // }
+
+    // public void dumbActivateIntakeSequence(){
+    //     pivotPickUp();
+    //     intakeSpin();
+    //     centerCoral();
+    // }
+
 
     @Override
     public void periodic() {

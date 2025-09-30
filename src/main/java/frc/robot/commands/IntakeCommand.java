@@ -21,15 +21,16 @@ public class IntakeCommand extends Command {
     public void end(boolean interupt) {
     intake.intakeStop();
     intake.pivotDropOff();
+    intake.stopCenteringCoral();
     }
 
-    @Override
-    public boolean isFinished() {
-        if (intake.isCoralDetected()) {
-            intake.intakeStop();
-            return intake.isCoralDetected();
-        }
-        return false;
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     if (intake.isCoralDetected()) {
+    //         intake.intakeStop();
+    //         return intake.isCoralDetected();
+    //     }
+    //     return false;
+    // }
 
 }

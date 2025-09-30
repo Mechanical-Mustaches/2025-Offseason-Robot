@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -21,6 +22,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ElevatorSequentialCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeL1Command;
 import frc.robot.commands.PivotArmCommand;
 import frc.robot.commands.ScoreCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -59,6 +61,13 @@ public class RobotContainer {
   public RobotContainer() {
     swerveDriveSubsystem = new SwerveDriveSubsystem(null);
 
+    // NamedCommands.registerCommand(new SequentialCommandGroup("L1 Score", 
+    
+    // );
+   
+
+
+
     // Configure the trigger bindings
     configureBindings();
 
@@ -79,10 +88,14 @@ public class RobotContainer {
     // pressed,
     // cancelling on release.
 
+    m_driverController.leftBumper().onTrue(
+        new InstantCommand(() -> swerveDriveSubsystem.zeroGyro()));
+
+
     // Elevator
 
-    m_gunnerController.button(1)
-        .whileTrue(new PivotArmCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2, false));
+    // m_gunnerController.button(1)
+    //     .whileTrue(new PivotArmCommand(elevatorSubsystem, ElevatorSubsystem.Level.L2, false));
 
 
     m_gunnerController.button(3)
@@ -133,6 +146,8 @@ public class RobotContainer {
          new InstantCommand(() -> intakeSubsystem.intakeStop()));
     m_gunnerController.button(2)
         .whileTrue(new ScoreCommand(endEffectorSubsystem));
+    m_gunnerController.button(1)
+        .whileTrue(new IntakeL1Command(intakeSubsystem));
 
   }
 
